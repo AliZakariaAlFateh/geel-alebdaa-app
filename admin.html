@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة التحكم — مدارس جيل الإبداع</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body data-page="admin">
+  <header>
+    <div>
+      <h1 style="display:inline;">لوحة التحكم — مدارس جيل الإبداع</h1>
+      <span class="user">مرحباً، <span id="user-name"></span></span>
+    </div>
+    <div>
+      <img src="Images/Logo_For_GeelEbdaa_School.png
+          " width="100" height="70">
+    </div>
+    <div>
+      <a href="index.html" class="btn btn-secondary" style="text-decoration:none;">الشهادات</a>
+      <a href="dashboard.html" class="btn btn-secondary" style="text-decoration:none;">إدخال الدرجات</a>
+      <button class="btn btn-danger" onclick="logout()">خروج</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="classes">المراحل والصفوف والفصول</button>
+      <button class="tab-btn" data-tab="subjects">المواد</button>
+      <button class="tab-btn" data-tab="teachers">المدرسين</button>
+      <button class="tab-btn" data-tab="assign">إسناد المواد</button>
+      <button class="tab-btn" data-tab="students">الطلاب</button>
+      <button class="tab-btn" data-tab="grades">عرض الدرجات</button>
+    </div>
+
+    <!-- ============ Classes Tab ============ -->
+    <div class="tab-panel active" data-panel="classes">
+      <div class="card">
+        <h3>1) إضافة مرحلة</h3>
+        <form id="stage-form" class="grid-2">
+          <div class="form-group">
+            <label>اسم المرحلة</label>
+            <input type="text" id="stage-name" class="form-control" placeholder="المرحلة المتوسطة" required>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة المرحلة</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد المراحل من Excel</h3>
+          <button type="button" id="stages-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="stages-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="stages-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>2) إضافة صف</h3>
+        <form id="grade-form" class="grid-2">
+          <div class="form-group">
+            <label>المرحلة</label>
+            <select id="stage-select-for-grade" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>اسم الصف</label>
+            <input type="text" id="grade-name" class="form-control" placeholder="الصف الأول المتوسط" required>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة الصف</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد الصفوف من Excel</h3>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" id="grades-idref-btn" class="btn btn-warning btn-sm">📋 مرجع أرقام المراحل</button>
+            <button type="button" id="grades-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:8px;">الأعمدة: <code>stage_id</code> , <code>name</code> , <code>sort_order</code></p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="grades-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="grades-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>3) إضافة فصل</h3>
+        <form id="class-form" class="grid-2">
+          <div class="form-group">
+            <label>الصف (المرحلة / الصف)</label>
+            <select id="gl-stage" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>اسم الفصل</label>
+            <input type="text" id="class-name" class="form-control" placeholder="فصل 1" required>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة الفصل</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد الفصول من Excel</h3>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" id="classes-idref-btn" class="btn btn-warning btn-sm">📋 مرجع أرقام الصفوف</button>
+            <button type="button" id="classes-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:8px;">الأعمدة: <code>grade_level_id</code> , <code>name</code></p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="classes-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="classes-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>الشجرة الكاملة</h3>
+        <div class="table-scroll">
+          <div id="stages-tree"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Subjects Tab ============ -->
+    <div class="tab-panel" data-panel="subjects">
+      <div class="card">
+        <h3>إضافة مادة</h3>
+        <form id="subject-form" class="grid-2">
+          <div class="form-group">
+            <label>اسم المادة</label>
+            <input type="text" id="subject-name" class="form-control" placeholder="تقنية رقمية" required>
+          </div>
+          <div class="form-group">
+            <label>الدرجة القصوى</label>
+            <input type="number" id="subject-max" class="form-control" value="100" min="1">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة المادة</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد المواد من Excel</h3>
+          <button type="button" id="subjects-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="subjects-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="subjects-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>قائمة المواد</h3>
+        <div class="table-scroll">
+          <div id="subjects-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Teachers Tab ============ -->
+    <div class="tab-panel" data-panel="teachers">
+      <div class="card">
+        <h3>إضافة مدرس / موظف</h3>
+        <p class="muted">تنبيه: تأكد من تعطيل "Confirm email" في Supabase Auth ليستطيع المدرس الدخول فوراً.</p>
+        <form id="teacher-form" class="grid-2">
+          <div class="form-group">
+            <label>الاسم الكامل</label>
+            <input type="text" id="teacher-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="teacher-email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور المؤقتة</label>
+            <input type="text" id="teacher-password" class="form-control" placeholder="ChangeMe@123">
+          </div>
+          <div class="form-group">
+            <label>الدور</label>
+            <select id="teacher-role" class="form-control">
+              <option value="teacher">مدرس</option>
+              <option value="employee">موظف</option>
+              <option value="admin">مدير</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة المدرس</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد المدرسين من Excel</h3>
+          <button type="button" id="teachers-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+        </div>
+        <p class="muted" style="margin-top:8px;">الأعمدة: <code>full_name</code> , <code>email</code> , <code>password</code> , <code>role</code></p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="teachers-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="teachers-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>قائمة المدرسين</h3>
+        <div class="table-scroll">
+          <div id="teachers-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Assign Tab ============ -->
+    <div class="tab-panel" data-panel="assign">
+      <div class="card">
+        <h3>إسناد مادة لمدرس</h3>
+        <form id="assign-form" class="grid-2">
+          <div class="form-group">
+            <label>المدرس</label>
+            <select id="assign-teacher" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>المادة</label>
+            <select id="assign-subject" class="form-control" required></select>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إسناد</button>
+          </div>
+        </form>
+      </div>
+      <div class="card">
+        <h3>الإسنادات الحالية</h3>
+        <div class="table-scroll">
+          <div id="assign-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Students Tab ============ -->
+    <div class="tab-panel" data-panel="students">
+      <div class="card">
+        <h3>إضافة طالب</h3>
+        <form id="student-form" class="grid-3">
+          <div class="form-group">
+            <label>الاسم الكامل</label>
+            <input type="text" id="student-name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>الفصل</label>
+            <select id="student-class" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label>رقم الهوية (اختياري)</label>
+            <input type="text" id="student-nid" class="form-control">
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button class="btn" type="submit">إضافة الطالب</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card excel-import">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <h3 style="margin:0;">📥 استيراد الطلاب من Excel</h3>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button type="button" id="students-idref-btn" class="btn btn-warning btn-sm">📋 مرجع أرقام الفصول</button>
+            <button type="button" id="students-template-btn" class="btn btn-secondary btn-sm">⬇️ تحميل قالب</button>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:8px;">الأعمدة: <code>class_id</code> , <code>full_name</code> , <code>national_id</code></p>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px;">
+          <input type="file" id="students-excel" accept=".xlsx,.xls" class="form-control" style="flex:1; min-width:200px;">
+          <button type="button" id="students-import-btn" class="btn">📤 رفع ومعاينة</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>قائمة الطلاب</h3>
+        <div class="table-scroll">
+          <div id="students-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Grades View Tab ============ -->
+    <div class="tab-panel" data-panel="grades">
+      <div class="card">
+        <h3>عرض الدرجات</h3>
+        <div class="grid-3">
+          <div class="form-group">
+            <label>الفصل</label>
+            <select id="gv-class" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>المادة</label>
+            <select id="gv-subject" class="form-control"></select>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button id="gv-load" class="btn">عرض</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>الطالب</th><th>الفصل</th><th>المادة</th>
+                <th>الترم</th><th>الدرجة</th><th>المدرس</th>
+              </tr>
+            </thead>
+            <tbody id="gv-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ IMPORT PREVIEW MODAL ============ -->
+  <div id="import-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="import-modal-title">معاينة الاستيراد</h2>
+        <button class="modal-close" onclick="closeImportModal()" title="إغلاق">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="muted" style="margin-top:0;">
+          ✏️ يمكنك تعديل أي خلية قبل الحفظ. الصفوف اللي فيها <span style="color:#ef4444;">⚠️</span>
+          محتاجة تعديل — اختر من القائمة المنسدلة.
+        </p>
+        <div class="modal-table-wrap">
+          <table class="data-table" id="import-modal-table">
+            <thead id="import-modal-thead"></thead>
+            <tbody id="import-modal-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span id="import-modal-count" class="muted"></span>
+        <div style="display:flex; gap:8px;">
+          <button onclick="closeImportModal()" class="btn btn-secondary">إلغاء</button>
+          <button onclick="confirmImport()" class="btn">💾 حفظ البيانات</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+
+
+
+

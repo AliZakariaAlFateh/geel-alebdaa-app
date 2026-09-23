@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول — مدارس جيل الإبداع</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body data-page="login">
+  <div class="container" style="max-width: 430px; margin-top: 80px;">
+    <div class="card">
+      <h2 style="text-align:center;">مدارس جيل الإبداع بنين</h2>
+      <h3 style="text-align:center; color: var(--muted); font-weight:400;">تسجيل الدخول</h3>
+      <form id="login-form">
+        <div class="form-group">
+          <label>البريد الإلكتروني:</label>
+          <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>كلمة المرور:</label>
+          <input type="password" id="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn" style="width:100%;">دخول</button>
+      </form>
+      <p id="error-msg" style="color: var(--danger); text-align:center; margin-top:14px;"></p>
+    </div>
+  </div>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="app.js"></script>
+</body>
+</html>

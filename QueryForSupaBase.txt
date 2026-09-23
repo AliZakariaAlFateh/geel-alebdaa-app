@@ -1,0 +1,225 @@
+-- ============================================
+-- مدارس جيل الإبداع — قاعدة البيانات الكاملة
+-- ============================================
+create extension if not exists "uuid-ossp";
+
+-- ========== Role enum ==========
+do $$ begin
+  create type user_role as enum ('admin', 'employee', 'teacher');
+exception when duplicate_object then null; end $$;
+
+-- ========== profiles ==========
+create table if not exists profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  full_name text not null default '',
+  email text,
+  role user_role not null default 'teacher',
+  is_active boolean default true,
+  created_at timestamptz default now()
+);
+
+-- ========== stages (المراحل) ==========
+create table if not exists stages (
+  id uuid primary key default uuid_generate_v4(),
+  name text not null unique,
+  sort_order int default 0,
+  created_at timestamptz default now()
+);
+
+-- ========== grade_levels (الصفوف) ==========
+create table if not exists grade_levels (
+  id uuid primary key default uuid_generate_v4(),
+  stage_id uuid not null references stages(id) on delete cascade,
+  name text not null,
+  sort_order int default 0,
+  created_at timestamptz default now(),
+  unique(stage_id, name)
+);
+
+-- ========== classes (الفصول) ==========
+create table if not exists classes (
+  id uuid primary key default uuid_generate_v4(),
+  grade_level_id uuid not null references grade_levels(id) on delete cascade,
+  name text not null,
+  academic_year text default '2025-2026',
+  created_at timestamptz default now(),
+  unique(grade_level_id, name, academic_year)
+);
+
+-- ========== subjects (المواد) ==========
+create table if not exists subjects (
+  id uuid primary key default uuid_generate_v4(),
+  name text not null unique,
+  max_score int default 100,
+  created_at timestamptz default now()
+);
+
+-- ========== students (الطلاب) ==========
+create table if not exists students (
+  id uuid primary key default uuid_generate_v4(),
+  full_name text not null,
+  class_id uuid not null references classes(id) on delete cascade,
+  national_id text,
+  is_active boolean default true,
+  created_by uuid references profiles(id),
+  created_at timestamptz default now()
+);
+create index if not exists idx_students_class on students(class_id);
+
+-- ========== teacher_subjects (ربط المدرس بالمادة) ==========
+create table if not exists teacher_subjects (
+  teacher_id uuid references profiles(id) on delete cascade,
+  subject_id uuid references subjects(id) on delete cascade,
+  primary key (teacher_id, subject_id)
+);
+
+-- ========== grades ==========
+create table if not exists grades (
+  id uuid primary key default uuid_generate_v4(),
+  student_id uuid not null references students(id) on delete cascade,
+  subject_id uuid not null references subjects(id) on delete cascade,
+  class_id uuid not null references classes(id) on delete cascade,
+  teacher_id uuid references profiles(id),
+  term text not null default 'term1',
+  score numeric(5,2),
+  updated_at timestamptz default now(),
+  unique(student_id, subject_id, term)
+);
+create index if not exists idx_grades_lookup on grades(class_id, subject_id, term);
+
+-- ============================================
+-- Trigger: إنشاء profile تلقائياً عند signup
+-- ============================================
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.profiles (id, full_name, email, role)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email,'@',1)),
+    new.email,
+    coalesce((new.raw_user_meta_data->>'role')::user_role, 'teacher')
+  )
+  on conflict (id) do update set
+    full_name = excluded.full_name,
+    email = excluded.email;
+  return new;
+end; $$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- ============================================
+-- دوال مساعدة
+-- ============================================
+create or replace function public.is_admin_or_employee()
+returns boolean language sql stable security definer set search_path = public as $$
+  select coalesce((select role in ('admin','employee') from public.profiles where id = auth.uid()), false)
+$$;
+
+create or replace function public.teaches_subject(p_subject uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists(select 1 from public.teacher_subjects
+                where teacher_id = auth.uid() and subject_id = p_subject)
+$$;
+
+-- ============================================
+-- RLS
+-- ============================================
+alter table profiles enable row level security;
+alter table stages enable row level security;
+alter table grade_levels enable row level security;
+alter table classes enable row level security;
+alter table subjects enable row level security;
+alter table students enable row level security;
+alter table teacher_subjects enable row level security;
+alter table grades enable row level security;
+
+-- profiles
+drop policy if exists "profiles read" on profiles;
+create policy "profiles read" on profiles for select
+  using (id = auth.uid() or is_admin_or_employee());
+
+drop policy if exists "profiles update own" on profiles;
+create policy "profiles update own" on profiles for update
+  using (id = auth.uid()) with check (id = auth.uid());
+
+drop policy if exists "profiles admin all" on profiles;
+create policy "profiles admin all" on profiles for all
+  using (is_admin_or_employee()) with check (is_admin_or_employee());
+
+-- stages / grade_levels / classes / subjects / students / teacher_subjects
+do $$
+declare t text;
+begin
+  foreach t in array array['stages','grade_levels','classes','subjects','students','teacher_subjects'] loop
+    execute format('drop policy if exists "%s read" on %I', t, t);
+    execute format('create policy "%s read" on %I for select using (auth.uid() is not null)', t, t);
+    execute format('drop policy if exists "%s write" on %I', t, t);
+    execute format('create policy "%s write" on %I for all using (is_admin_or_employee()) with check (is_admin_or_employee())', t, t);
+  end loop;
+end $$;
+
+-- grades
+drop policy if exists "grades read" on grades;
+create policy "grades read" on grades for select
+  using (is_admin_or_employee() or teaches_subject(subject_id));
+
+drop policy if exists "grades insert" on grades;
+create policy "grades insert" on grades for insert with check
+  (is_admin_or_employee() or (teaches_subject(subject_id) and teacher_id = auth.uid()));
+
+drop policy if exists "grades update" on grades;
+create policy "grades update" on grades for update
+  using (is_admin_or_employee() or teaches_subject(subject_id))
+  with check (is_admin_or_employee() or teaches_subject(subject_id));
+
+drop policy if exists "grades delete" on grades;
+create policy "grades delete" on grades for delete
+  using (is_admin_or_employee() or teaches_subject(subject_id));
+
+-- ============================================
+-- RPC: حفظ دفعة درجات كاملة
+-- ============================================
+create or replace function public.save_grades_bulk(
+  p_class_id uuid,
+  p_subject_id uuid,
+  p_term text,
+  p_rows jsonb
+) returns void language plpgsql security definer set search_path = public as $$
+declare
+  r jsonb;
+  v_teacher_id uuid := auth.uid();
+begin
+  if not (is_admin_or_employee() or teaches_subject(p_subject_id)) then
+    raise exception 'ليس لديك صلاحية لإدخال درجات هذه المادة';
+  end if;
+
+  for r in select * from jsonb_array_elements(p_rows) loop
+    insert into grades (student_id, subject_id, class_id, teacher_id, term, score)
+    values (
+      (r->>'student_id')::uuid,
+      p_subject_id,
+      p_class_id,
+      v_teacher_id,
+      p_term,
+      nullif(r->>'score','')::numeric
+    )
+    on conflict (student_id, subject_id, term)
+    do update set
+      score = excluded.score,
+      teacher_id = excluded.teacher_id,
+      class_id = excluded.class_id,
+      updated_at = now();
+  end loop;
+end; $$;
+
+grant execute on function public.save_grades_bulk(uuid, uuid, text, jsonb) to authenticated;
+
+
+
+update profiles
+set role = 'admin', full_name = 'مدير النظام'
+where email = 'admin@geel.edu.sa';
