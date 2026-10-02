@@ -1,5 +1,5 @@
 :root {
-  --primary: #1e5fa8;
+  --primary: #1ea8a4;
   --primary-dark: #163f70;
   --bg: #f4f6fa;
   --card: #ffffff;
@@ -235,8 +235,8 @@ h2, h3 { color: var(--primary-dark); margin-top: 0; }
 }
 
 .cert-logos img {
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 100px;
   object-fit: contain;
 }
 
@@ -251,8 +251,8 @@ h2, h3 { color: var(--primary-dark); margin-top: 0; }
   }
 
   .cert-logos img {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 100px;
     object-fit: contain;
   }
 }
@@ -514,3 +514,1104 @@ h2, h3 { color: var(--primary-dark); margin-top: 0; }
 .data-table thead th:last-child {
   border-top-left-radius: 10px;
 }
+
+
+
+
+/* ============================================
+   Certificate Design (Saudi School Style)
+   ============================================ */
+
+.certificate-card {
+  background: #fff;
+  color: #111827;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 0 60px;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  page-break-inside: avoid;
+  direction: rtl;
+  overflow: hidden;
+}
+
+/* شريط علوي أخضر */
+.cert-top-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+  margin-bottom: 20px;
+}
+
+/* شريط سفلي أخضر */
+.cert-bottom-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+}
+
+/* الشعارات */
+.cert-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  margin-bottom: 20px;
+}
+.cert-logos img {
+  width: 120px;
+  height: 100px;
+  object-fit: contain;
+}
+
+/* العنوان الرئيسي */
+.cert-title-block {
+  text-align: center;
+  margin: 10px 0 20px;
+}
+.cert-title-block h2 {
+  display: inline-block;
+  color: #1e5fa8;
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  padding: 6px 40px;
+  border-bottom: 3px solid #4db8a8;
+  letter-spacing: 1px;
+}
+
+/* النص التقديمي */
+.cert-intro {
+  font-size: 13.5px;
+  line-height: 1.9;
+  text-align: justify;
+  padding: 0 40px;
+  margin: 10px 0 20px;
+  color: #1f2937;
+}
+
+/* جدول معلومات الطالب */
+.cert-info-table {
+  width: calc(100% - 80px);
+  margin: 0 40px 15px;
+  border-collapse: collapse;
+  border: 2px solid #4db8a8;
+  font-size: 14px;
+}
+.cert-info-table th,
+.cert-info-table td {
+  border: 1px solid #4db8a8;
+  padding: 8px 12px;
+  text-align: center;
+}
+.cert-info-table th {
+  background: #e6f7f3;
+  color: #1e5fa8;
+  font-weight: 700;
+  width: 130px;
+}
+.cert-info-table td {
+  color: #111827;
+}
+
+/* جدول الدرجات */
+.cert-grades-table {
+  width: calc(100% - 80px);
+  margin: 15px 40px 20px;
+  border-collapse: collapse;
+  border: 2px solid #b45309;
+  font-size: 14px;
+}
+.cert-grades-table th,
+.cert-grades-table td {
+  border: 1px solid #b45309;
+  padding: 8px 10px;
+  text-align: center;
+}
+.cert-grades-table thead th {
+  background: #fde68a;
+  color: #7c2d12;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+.cert-grades-table tbody tr:nth-child(even) {
+  background: #fffbeb;
+}
+
+/* الأقسام (رسالة التحصيل / الانضباط) */
+.cert-section {
+  margin: 18px 40px;
+  padding: 10px 16px;
+  border-right: 4px solid #4db8a8;
+  background: #f0fdfa;
+  border-radius: 6px;
+}
+.cert-section h4 {
+  margin: 0 0 6px;
+  color: #0f766e;
+  font-size: 15px;
+  font-weight: 800;
+}
+.cert-section p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+/* التنبيه الأحمر */
+.cert-alert {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 13.5px;
+  text-align: center;
+  padding: 0 40px;
+  margin: 20px 0;
+  line-height: 1.7;
+}
+
+/* الفوتر */
+.cert-footer-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 40px;
+  margin-top: 30px;
+  gap: 30px;
+}
+.cert-signature {
+  text-align: center;
+  min-width: 200px;
+}
+.cert-signature strong {
+  display: block;
+  color: #1e5fa8;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.cert-signature .signature-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+.cert-signature .stamp-placeholder {
+  display: inline-block;
+  border: 2px dashed #4db8a8;
+  color: #4db8a8;
+  padding: 12px 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  transform: rotate(-8deg);
+}
+
+.cert-ref {
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #4b5563;
+  text-align: right;
+  flex: 1;
+}
+.cert-ref strong {
+  color: #1e5fa8;
+}
+
+/* ============ Print ============ */
+#print-area { display: none; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 8mm;
+  }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+  .certificate-card {
+    box-shadow: none;
+    margin: 0 auto;
+    max-width: 100%;
+    page-break-after: always;
+  }
+  .certificate-card:last-child {
+    page-break-after: auto;
+  }
+}
+
+
+
+
+
+
+
+/*                */
+
+
+
+/* ============================================
+   Certificate — Compact A4 Design
+   ============================================ */
+
+.certificate-card {
+  background: #fff;
+  color: #111827;
+  width: 190mm;
+  min-height: 277mm;
+  margin: 0 auto;
+  padding: 6mm 10mm 4mm;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  page-break-inside: avoid;
+  page-break-after: always;
+  direction: rtl;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.certificate-card:last-child { page-break-after: auto; }
+
+.cert-top-bar {
+  height: 6px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+  margin-bottom: 8px;
+  border-radius: 3px;
+}
+
+.cert-bottom-bar {
+  position: absolute;
+  bottom: 4mm; left: 8mm; right: 8mm;
+  height: 6px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+  border-radius: 3px;
+}
+
+.cert-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6mm;
+  margin-bottom: 6px;
+}
+.cert-logos img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.cert-title-block {
+  text-align: center;
+  margin: 4px 0 8px;
+}
+.cert-title-block h2 {
+  display: inline-block;
+  color: #1e5fa8;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  padding: 3px 24px;
+  border-bottom: 2px solid #4db8a8;
+  letter-spacing: 1px;
+}
+
+.cert-intro {
+  font-size: 11px;
+  line-height: 1.55;
+  text-align: justify;
+  padding: 0 2mm;
+  margin: 6px 0 8px;
+  color: #1f2937;
+}
+
+.cert-info-table {
+  width: 100%;
+  margin: 0 0 8px;
+  border-collapse: collapse;
+  border: 1.5px solid #4db8a8;
+  font-size: 11px;
+  table-layout: fixed;
+}
+.cert-info-table th,
+.cert-info-table td {
+  border: 1px solid #4db8a8;
+  padding: 4px 6px;
+  text-align: center;
+  word-wrap: break-word;
+}
+.cert-info-table th {
+  background: #e6f7f3;
+  color: #1e5fa8;
+  font-weight: 700;
+  width: 20%;
+}
+.cert-info-table td { color: #111827; }
+
+.cert-grades-table {
+  width: 100%;
+  margin: 0 0 8px;
+  border-collapse: collapse;
+  border: 1.5px solid #b45309;
+  font-size: 11px;
+}
+.cert-grades-table th,
+.cert-grades-table td {
+  border: 1px solid #b45309;
+  padding: 4px 6px;
+  text-align: center;
+}
+.cert-grades-table thead th {
+  background: #fde68a;
+  color: #7c2d12;
+  font-weight: 800;
+  font-size: 11px;
+}
+.cert-grades-table tbody tr:nth-child(even) {
+  background: #fffbeb;
+}
+
+.cert-section {
+  margin: 6px 0;
+  padding: 5px 10px;
+  border-right: 3px solid #4db8a8;
+  background: #f0fdfa;
+  border-radius: 4px;
+}
+.cert-section h4 {
+  margin: 0 0 2px;
+  color: #0f766e;
+  font-size: 12px;
+  font-weight: 800;
+}
+.cert-section p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.55;
+  color: #1f2937;
+}
+
+.cert-alert {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 11px;
+  text-align: center;
+  margin: 6px 0 8px;
+  line-height: 1.5;
+}
+
+.cert-footer-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10px;
+  gap: 15px;
+}
+.cert-signature {
+  text-align: center;
+  min-width: 150px;
+}
+.cert-signature strong {
+  display: block;
+  color: #1e5fa8;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+.cert-signature .signature-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+.cert-signature .stamp-placeholder {
+  display: inline-block;
+  border: 1.5px dashed #4db8a8;
+  color: #4db8a8;
+  padding: 6px 12px;
+  border-radius: 50%;
+  font-size: 9px;
+  transform: rotate(-8deg);
+}
+.cert-ref {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #4b5563;
+  text-align: right;
+  flex: 1;
+}
+.cert-ref strong { color: #1e5fa8; }
+
+/* ============ Print ============ */
+#print-area { display: none; }
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 4mm;
+  }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+  .certificate-card {
+    box-shadow: none;
+    margin: 0 auto;
+    width: 202mm;
+    min-height: 289mm;
+    padding: 4mm 6mm 6mm;
+  }
+  .cert-logos img {
+    width: 55px;
+    height: 55px;
+  }
+  .cert-title-block h2 { font-size: 18px; }
+  .cert-intro { font-size: 10.5px; line-height: 1.5; }
+  .cert-info-table,
+  .cert-grades-table { font-size: 10.5px; }
+  .cert-section p { font-size: 10.5px; }
+  .cert-alert { font-size: 10.5px; }
+}
+
+
+
+
+/*
+
+
+
+
+
+
+*/
+
+/* ============================================
+   Certificate — Full A4 with Flex Layout
+   ============================================ */
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+.certificate-card {
+  background: #fff;
+  color: #111827;
+  width: 210mm;
+  height: 294mm;
+  padding: 6mm 10mm 4mm;
+  box-sizing: border-box;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  page-break-inside: avoid;
+  margin: 0 auto;
+}
+.certificate-card:not(:last-child) {
+  page-break-after: always;
+}
+
+.cert-top-bar {
+  height: 8px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+  border-radius: 3px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.cert-bottom-bar {
+  position: absolute;
+  bottom: 4mm;
+  left: 10mm;
+  right: 10mm;
+  height: 8px;
+  background: linear-gradient(90deg, #4db8a8 0%, #3a9d8f 50%, #4db8a8 100%);
+  border-radius: 3px;
+}
+
+/* الشعارات */
+.cert-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4mm;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+.cert-logos img {
+  width: 100px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* العنوان */
+.cert-title-block {
+  text-align: center;
+  margin: 6px 0 12px;
+  flex-shrink: 0;
+}
+.cert-title-block h2 {
+  display: inline-block;
+  color: #1e5fa8;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+  padding: 4px 36px;
+  border-bottom: 3px solid #4db8a8;
+  letter-spacing: 1px;
+}
+
+/* النص التقديمي */
+.cert-intro {
+  font-size: 13px;
+  line-height: 1.75;
+  text-align: justify;
+  margin: 4px 0 12px;
+  color: #1f2937;
+  flex-shrink: 0;
+}
+
+/* جدول المعلومات */
+.cert-info-table {
+  width: 100%;
+  margin: 0 0 10px;
+  border-collapse: collapse;
+  border: 2px solid #4db8a8;
+  font-size: 13.5px;
+  flex-shrink: 0;
+}
+.cert-info-table th,
+.cert-info-table td {
+  border: 1px solid #4db8a8;
+  padding: 6px 8px;
+  text-align: center;
+  word-wrap: break-word;
+}
+.cert-info-table th {
+  background: #e6f7f3;
+  color: #1e5fa8;
+  font-weight: 700;
+  width: 18%;
+}
+.cert-info-table td { color: #111827; }
+
+/* جدول الدرجات */
+.cert-grades-table {
+  width: 100%;
+  margin: 0 0 10px;
+  border-collapse: collapse;
+  border: 2px solid #b45309;
+  font-size: 13.5px;
+}
+.cert-grades-table th,
+.cert-grades-table td {
+  border: 1px solid #b45309;
+  padding: 5px 8px;
+  text-align: center;
+}
+.cert-grades-table thead th {
+  background: #fde68a;
+  color: #7c2d12;
+  font-weight: 800;
+  font-size: 13px;
+}
+.cert-grades-table tbody tr:nth-child(even) {
+  background: #fffbeb;
+}
+
+/* الأقسام (رسالة التحصيل / الانضباط) */
+.cert-section {
+  margin: 6px 0;
+  padding: 6px 12px;
+  border-right: 4px solid #4db8a8;
+  background: #f0fdfa;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.cert-section h4 {
+  margin: 0 0 3px;
+  color: #0f766e;
+  font-size: 14px;
+  font-weight: 800;
+}
+.cert-section p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+/* التنبيه الأحمر */
+.cert-alert {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  margin: 8px 0;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+/* ⭐⭐ الفوتر — دلوقتي بينزل لأسفل الصفحة تلقائيًا */
+.cert-footer-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: auto;         /* ⭐ ده السر */
+  margin-bottom: 12mm;      /* مساحة للشريط السفلي */
+  padding-top: 10px;
+  flex-shrink: 0;
+}
+.cert-signature {
+  text-align: center;
+  min-width: 180px;
+}
+.cert-signature strong {
+  display: block;
+  color: #1e5fa8;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+.cert-signature .signature-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+}
+.cert-signature .stamp-placeholder {
+  display: inline-block;
+  border: 2px dashed #4db8a8;
+  color: #4db8a8;
+  padding: 10px 18px;
+  border-radius: 50%;
+  font-size: 11px;
+  transform: rotate(-8deg);
+}
+.cert-ref {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #4b5563;
+  text-align: right;
+  flex: 1;
+}
+.cert-ref strong { color: #1e5fa8; }
+
+/* ============ Print ============ */
+#print-area { display: none; }
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+  .certificate-card {
+    box-shadow: none;
+    margin: 0;
+    page-break-inside: avoid;
+  }
+}
+
+
+
+
+
+/* ============================================
+   Certificate — Compact A4 with Turquoise Top + Gold BG
+   ============================================ */
+
+/* ============================================
+   Certificate — Final Layout
+   ============================================ */
+
+@page { size: A4 portrait; margin: 0; }
+
+.certificate-card {
+  background: #fff;
+  color: #111827;
+  width: 210mm;
+  height: 292mm;
+  box-sizing: border-box;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  direction: rtl;
+  overflow: hidden;
+  page-break-inside: avoid;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.certificate-card:not(:last-child) { page-break-after: always; }
+
+/* ⭐⭐ الهيدر */
+.cert-header {
+  position: relative;
+  width: 100%;
+  height: 42mm;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ⭐ الخلفية الذهبية — فوق بالكامل */
+.cert-header .bg-gold {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  object-fit: fill;
+  object-position:center center;
+  z-index: 1;
+}
+
+/* ⭐⭐ الخلفية التركوازية — فوق الشمال (فوق الذهبي) */
+.cert-header .bg-turq {
+  position: absolute;
+  top: 0;
+  left: 0;                    /* ← الشمال */
+  width: 55%;                 /* ← تأخذ حوالي نص العرض من الشمال */
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  z-index: 2;
+}
+
+/* ⭐⭐ الشعارات — فوق كل حاجة */
+.cert-logos {
+  position: absolute;
+  bottom: 15mm;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  padding: 0 12mm;
+}
+
+.cert-logos img {
+  height: 80px;
+  width: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.2));
+}
+
+/* ⭐⭐ شريط العنوان — تحت الهيدر مباشرة */
+.cert-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10mm;
+  flex-shrink: 0;
+  margin-top: 1mm;            /* ← مسافة صغيرة */
+  padding: 0;
+  gap: 0;
+}
+
+.cert-title-bar .title-line-left,
+.cert-title-bar .title-line-right {
+  flex: 1;
+  height: 8mm;
+  background: #1a8c7f;
+  max-width: 40%;
+}
+
+.cert-title-bar h2 {
+  color: #c9a227;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 0 18px;
+  height: 10mm;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  letter-spacing: 3px;
+  white-space: nowrap;
+  background: #fff;
+}
+
+/* ⭐⭐ جسم المحتوى */
+.cert-body {
+  flex: 1;
+  padding: 3mm 8mm 2mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.cert-intro {
+  font-size: 11px;
+  line-height: 1.55;
+  text-align: justify;
+  margin: 2px 0 6px;
+  color: #1f2937;
+  flex-shrink: 0;
+}
+
+.cert-info-table {
+  width: 100%;
+  margin: 0 0 6px;
+  border-collapse: collapse;
+  border: 1.5px solid #b45309;
+  font-size: 11.5px;
+  flex-shrink: 0;
+}
+.cert-info-table th,
+.cert-info-table td {
+  border: 1px solid #b45309;
+  padding: 3px 8px;
+  text-align: center;
+}
+.cert-info-table th {
+  background: #fde68a;
+  color: #7c2d12;
+  font-weight: 800;
+  width: 20%;
+  white-space: nowrap;
+}
+.cert-info-table th.th-split { width: 15%; }
+.cert-info-table td { background: #fffbeb; }
+
+.cert-grades-table {
+  width: 100%;
+  margin: 0 0 6px;
+  border-collapse: collapse;
+  border: 1.5px solid #b45309;
+  font-size: 11.5px;
+}
+.cert-grades-table th,
+.cert-grades-table td {
+  border: 1px solid #b45309;
+  padding: 3px 6px;
+  text-align: center;
+}
+.cert-grades-table thead tr:first-child th {
+  background: #fcd34d;
+  color: #7c2d12;
+  font-weight: 800;
+  font-size: 11.5px;
+}
+.cert-grades-table thead .cert-max-row th {
+  background: #fff3c4;
+  color: #b45309;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 2px;
+}
+.cert-grades-table tbody td { background: #fef3c7; }
+.cert-grades-table tbody tr:nth-child(even) td { background: #fde68a; }
+.cert-grades-table .cert-total-row td {
+  background: #fbbf24 !important;
+  font-weight: 800;
+  color: #7c2d12;
+}
+.cert-col-total {
+  background: #fde68a;
+  font-weight: 800;
+  color: #7c2d12;
+}
+
+.cert-section {
+  margin: 4px 0;
+  padding: 3px 0 4px;
+  flex-shrink: 0;
+  border-bottom: 1.5px solid #1a8c7f;
+}
+.cert-section h4 {
+  margin: 0 0 2px;
+  color: #1a8c7f;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: right;
+}
+.cert-section p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #1f2937;
+  text-align: right;
+  font-weight: 600;
+}
+
+.cert-alert {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 11px;
+  text-align: center;
+  margin: 5px 0;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+.cert-footer-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  padding: 6px 0 2px;
+  flex-shrink: 0;
+}
+
+.cert-note {
+  flex: 1;
+  max-width: 190px;
+  background: #fff;
+  border: 1.5px solid #1a8c7f;
+  border-radius: 6px;
+  padding: 5px 8px;
+  box-shadow: 2px 2px 8px rgba(26, 140, 127, 0.25);
+  text-align: right;
+  order: 1;
+}
+.cert-note-title {
+  color: #1a8c7f;
+  font-weight: 800;
+  font-size: 10.5px;
+  border-bottom: 1px dashed #1a8c7f;
+  padding-bottom: 2px;
+  margin-bottom: 3px;
+  text-align: center;
+}
+.cert-note-body {
+  font-size: 9.5px;
+  line-height: 1.5;
+  color: #374151;
+}
+.cert-note-body strong { color: #1a8c7f; }
+
+.cert-stamp-box {
+  flex: 0 0 auto;
+  text-align: center;
+  order: 2;
+}
+.cert-stamp-box .stamp-img {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+}
+
+.cert-signature {
+  flex: 1;
+  max-width: 190px;
+  text-align: center;
+  order: 3;
+}
+.cert-signature .signature-label {
+  color: #1a8c7f;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.cert-signature .signature-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: #111827;
+  border-bottom: 1.5px solid #374151;
+  padding-bottom: 2px;
+  margin-bottom: 4px;
+  display: inline-block;
+  min-width: 130px;
+}
+.cert-signature .signature-img {
+  width: 90px;
+  height: auto;
+  max-height: 35px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ⭐⭐ الخلفية السفلية */
+.cert-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 12mm;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.cert-bottom img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom center;
+}
+
+/* ============ Print ============ */
+#print-area { display: none; }
+
+@media print {
+  @page { size: A4 portrait; margin: 0; }
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+  .certificate-card {
+    box-shadow: none;
+    margin: 0;
+    width: 210mm !important;
+    height: 292mm !important;
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+  .cert-title-bar .title-line-left,
+  .cert-title-bar .title-line-right,
+  .cert-grades-table thead th,
+  .cert-grades-table tbody td,
+  .cert-info-table th,
+  .cert-info-table td,
+  .cert-note {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+
+.cert-header .bg-turq {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  width: 55%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  z-index: 2;
+  mix-blend-mode: multiply;   /* ⭐ السطر السحري */
+}
+
